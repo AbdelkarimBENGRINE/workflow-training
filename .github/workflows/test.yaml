@@ -1,0 +1,50 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+  pull_request:
+    branches:
+      - dev
+      - main
+  page_build:
+  release:
+    types:
+      - created
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-20.04
+    name: hello-world
+    steps:
+    - id: Say_hello_world
+      run: "echo Welcome to the Github Actions workshop !"
+
+  unit-test:
+    runs-on: ubuntu-20.04
+    name: unit-test
+    container: epitechcontent/epitest-docker
+    steps:
+    - uses: actions/checkout@v1
+    - id: Unit-tests
+      run: "make tests_run > .github/workflows/tests_run_outputs"
+    - id: Coverage
+      run: "make coverage > .github/workflows/coverage_outputs"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: coverage_outputs
+        path: .github/workflows/coverage_outputs
+  function-tests_outputs:
+    runs-on: ubuntu-20.04
+    name: function-tests_outputs
+    container: epitechcontent/epitest-docker
+    steps:
+    - uses: actions/checkout@v1
+    - id: functional_tests
+      run: make re ; bash functional-test.sh > functionnal_tests
+    - uses: actions/upload-artifact@v2
+      with:
+        name: functionnal_tests
+        path: .github/workflows/functionnal_tests
