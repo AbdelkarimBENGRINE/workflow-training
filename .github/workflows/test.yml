@@ -16,4 +16,4 @@ jobs:
     name: hello-world
     steps:
     - id: Say_hello_world
-      run: "echo hello word"
+      run: "echo Welcome to the Github Actions workshop !"
